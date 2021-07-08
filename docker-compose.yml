@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+    brankas-api:
+        image: brankas
+        ports:
+        - "50051:50051"
+        env_file:
+        - deployment/local.env 
+        depends_on:
+            - brankas-postgres  
+        container_name: brankas-api 
+        networks:
+            - network1
+
+    brankas-postgres:
+        image: postgres:9.6
+        volumes:
+            - postgres_data1:/var/lib/postgresql/data/
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgespswd
+            - POSTGRES_DB=brankas
+        container_name: brankas-postgres         
+        ports:
+            - 5433:5432  
+        networks:
+            - network1                
+
+networks:
+    network1:
+        driver: bridge        
+
+volumes:
+    postgres_data1:       
